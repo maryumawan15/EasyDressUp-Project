@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"          
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="utf-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <h:outputStylesheet name="easydressup.css"  library="css"/>
+        <h:outputStylesheet name="footer.css"  library="css"/>
+        <style type="text/css">
+            body > .container {
+                padding: 0px 15px 15px 15px;
+
+            }
+            #main{
+                margin-top:4%;
+                background-color: lightgray;
+                max-width: 30%;
+                max-height: 100%;
+                min-width: 30%;
+                min-height: 100%;
+            }
+        </style>
+    </h:head>
+    <h:body>
+         <header>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">easyDressUp</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><h:link outcome="categories">Category</h:link></li>
+                        <li><h:link outcome="users">User</h:link></li>
+                    </ul>
+                </div>
+                <div class="navbar-nav" style="position: absolute;right: 42px;top: 9%;">
+                    <span style="color: white;position: absolute;right: 124%;top: 28%">
+                        <h:link style="color:white;cursor: pointer;">
+                            <h:outputText value="#{loginController.user.firstName}">
+                            </h:outputText><span style="margin-right: 10px"/>
+                            <h:outputText value="#{loginController.user.lastName}"/>
+                        </h:link></span>
+                    <h:form>
+                        <h:commandLink class="nav-item btn btn-primary" action="#{loginController.logout}">Logout</h:commandLink>
+                    </h:form>
+                </div>
+            </nav>
+        </header>  
+        <main role="main" class="container" id="main">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form >
+                <h:panelGrid columns="8">
+                    <div class="form-group">
+                        <h:outputLabel value="#{messages.CreateCategoryLabel_category}" for="category" />
+                        <h:inputText id="category" value="#{categoryController.selected.category}" title="#{messages.CreateCategoryTitle_category}" required="true" requiredMessage="#{messages.CreateCategoryRequiredMessage_category}"/>
+                    </div>
+                    <div class="form-group">
+                        <h:outputLabel value="#{messages.CreateCategoryLabel_parentCategory}" for="parentCategory" />
+                        <h:selectOneMenu id="parentCategory" value="#{categoryController.selected.parentCategory}" title="#{messages.CreateCategoryTitle_parentCategory}" >
+                            <f:selectItems value="#{categoryController.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu> </div>
+                </h:panelGrid>
+                <h:commandLink class="btn btn-primary" action="#{categoryController.create}" value="#{messages.CreateCategorySaveLink}" />
+                <span style="margin: 10px"></span>
+                <h:commandLink class="btn btn-primary"  action="#{categoryController.prepareList}" value="#{messages.CreateCategoryShowAllLink}" immediate="true"/>
+            </h:form>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <span class="text-muted">&copy;easydressup.com 2018-2019</span>
+            </div>
+        </footer>
+    </h:body>
+
+</html>

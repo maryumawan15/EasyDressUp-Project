@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"          
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="utf-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <h:outputStylesheet name="easydressup.css"  library="css"/>
+        <h:outputStylesheet name="footer.css"  library="css"/>
+        <h:outputStylesheet name="jsfcrud.css"  library="css"/>
+        <style>
+            .outfits {
+                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            .outfits td, .categories th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+            .outfits td a{
+                color:white;
+            }
+            .outfits tr:nth-child(even){background-color: #ffc107;color:white}
+            .outfits tr:nth-child(odd){background-color: #343a40;color:white}
+
+            .outfits tr:hover {background-color: #ddd;}
+
+            .outfits th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #337ab7;
+                color: white;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <header>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">easyDressUp</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><h:link outcome="categories"><h:outputLabel value="#{messages.category_link_label}"/></h:link></li>
+                        <li><h:link outcome="outfits">OutFit</h:link></li>
+                        <li><h:link outcome="calander">Calander</h:link></li>
+                        <li><h:link outcome="language">Language</h:link>                          
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar-nav" style="position: absolute;right: 42px;top: 9%;">
+                    <span style="color: white;position: absolute;right: 124%;top: 28%">
+                        <h:form>
+                            <h:commandLink style="color:white;cursor: pointer;" action="#{usersController.prepareProfile()}">
+                                <h:outputText value="#{loginController.user.firstName}">
+                                </h:outputText><span style="margin-right: 10px"/>
+                                <h:outputText value="#{loginController.user.lastName}"/>
+                            </h:commandLink></h:form></span>
+                    <h:form>
+                        <h:commandLink class="nav-item btn btn-primary" action="#{loginController.logout}">Logout</h:commandLink>
+                    </h:form>
+                </div>
+            </nav>
+        </header>       
+
+        <h:form styleClass="jsfcrud_list_form">
+            <h:commandLink action="#{userOutfitController.prepareCreate}" value="#{messages.create_outfit_btn_label}" class="btn btn-primary"/>
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:outputText escape="false" value="#{messages.ListUserOutfitEmpty}" rendered="#{userOutfitController.items.rowCount == 0}"/>
+            <h:panelGroup rendered="#{userOutfitController.items.rowCount > 0}">
+                <h:outputText value="#{userOutfitController.pagination.pageFirstItem + 1}..#{userOutfitController.pagination.pageLastItem + 1}/#{userOutfitController.pagination.itemsCount}"/>&nbsp;
+                <h:commandLink action="#{userOutfitController.previous}" value="#{messages.Previous} #{userOutfitController.pagination.pageSize}" rendered="#{userOutfitController.pagination.hasPreviousPage}"/>&nbsp;
+                <h:commandLink action="#{userOutfitController.next}" value="#{messages.Next} #{userOutfitController.pagination.pageSize}" rendered="#{userOutfitController.pagination.hasNextPage}"/>&nbsp;
+                <h:dataTable value="#{userOutfitController.items}" var="item" border="0" cellpadding="2" cellspacing="0"  rules="all" class="outfits">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{messages.ListUserOutfitTitle_name}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.name}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{messages.ListUserOutfitTitle_user}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.user.firstName}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Actions"/>
+                        </f:facet>
+                        <h:commandLink action="#{userOutfitController.prepareView}" value="#{messages.ListUserOutfitViewLink}"/>
+                        <h:outputText value=" "/>
+                        <h:commandLink action="#{userOutfitController.prepareEdit}" value="#{messages.ListUserOutfitEditLink}"/>
+                        <h:outputText value=" "/>
+                        <h:commandLink action="#{userOutfitController.destroy}" value="#{messages.ListUserOutfitDestroyLink}"/>
+                        
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
+        </h:form>
+    </h:body>
+</html>

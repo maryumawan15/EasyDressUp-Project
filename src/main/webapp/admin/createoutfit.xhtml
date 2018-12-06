@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"          
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <meta charset="utf-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>        
+        <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" />
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+        <h:outputStylesheet name="easydressup.css"  library="css"/>
+        <h:outputStylesheet name="footer.css"  library="css"/>
+        <h:outputStylesheet name="jsfcrud.css"  library="css"/>
+        <style type="text/css">
+            body > .container {
+                padding: 0px 15px 15px 15px;
+
+            }
+            #main{
+                margin-top:4%;
+                background-color: lightgray;
+                max-width: 30%;
+                min-width: 30%
+            }
+        </style>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".datepicker").datepicker({
+                    dateFormat: 'dd/mm/yy',
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: "1960:2018"
+                });
+            });
+
+        </script>
+    </h:head>
+    <h:body>
+        <header>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">easyDressUp</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><h:link outcome="categories">Category</h:link></li>
+                        <li><h:link outcome="users">User</h:link></li>
+                    </ul>
+                </div>
+                <div class="navbar-nav" style="position: absolute;right: 42px;top: 9%;">
+                    <span style="color: white;position: absolute;right: 124%;top: 28%">
+                        <h:link style="color:white;cursor: pointer;" outcome="profile">
+                            <h:outputText value="#{loginController.user.firstName}">
+                            </h:outputText><span style="margin-right: 10px"/>
+                            <h:outputText value="#{loginController.user.lastName}"/>
+                        </h:link></span>
+                    <h:form>
+                        <h:commandLink class="nav-item btn btn-primary" action="#{loginController.logout}">Logout</h:commandLink>
+                    </h:form>
+                </div>
+            </nav>
+        </header>  
+        <main role="main" class="container" id="main" >
+            <h2>Create Outfit</h2>
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.CreateUserOutfitLabel_name}" for="name" />
+                    <h:inputText id="name" value="#{userOutfitController.selected.name}" title="#{messages.CreateUserOutfitTitle_name}" />
+                </h:panelGrid>
+                <h:commandLink class="btn btn-primary" action="#{userOutfitController.create(loginController.user)}" value="#{messages.CreateUserOutfitSaveLink}" />
+                <span style="margin: 10px"></span>
+                <h:commandLink class="btn btn-primary" action="#{userOutfitController.prepareList}" value="#{messages.CreateUserOutfitShowAllLink}" immediate="true"/>
+            </h:form>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <span class="text-muted">&copy;easydressup.com 2018-2019</span>
+            </div>
+        </footer>
+
+    </h:body>
+</html>
+

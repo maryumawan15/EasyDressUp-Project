@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.CreateUsersTitle}"  ></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.CreateUsersLabel_email}" for="email" />
+                    <h:inputText id="email" value="#{usersController.selected.email}" title="#{messages.CreateUsersTitle_email}" />
+                    <h:outputLabel value="#{messages.CreateUsersLabel_firstName}" for="firstName" />
+                    <h:inputText id="firstName" value="#{usersController.selected.firstName}" title="#{messages.CreateUsersTitle_firstName}" />
+                    <h:outputLabel value="#{messages.CreateUsersLabel_lastName}" for="lastName" />
+                    <h:inputText id="lastName" value="#{usersController.selected.lastName}" title="#{messages.CreateUsersTitle_lastName}" />
+                    <h:outputLabel value="#{messages.CreateUsersLabel_gender}" for="gender" />
+                    <h:inputText id="gender" value="#{usersController.selected.gender}" title="#{messages.CreateUsersTitle_gender}" />
+                    <h:outputLabel value="#{messages.CreateUsersLabel_dob}" for="dob" />
+                    <h:inputText id="dob" value="#{usersController.selected.dob}" title="#{messages.CreateUsersTitle_dob}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{messages.CreateUsersLabel_groupName}" for="groupName" />
+                    <h:inputText id="groupName" value="#{usersController.selected.groupName}" title="#{messages.CreateUsersTitle_groupName}" />
+                    <h:outputLabel value="#{messages.CreateUsersLabel_userId}" for="userId" />
+                    <h:inputText id="userId" value="#{usersController.selected.userId}" title="#{messages.CreateUsersTitle_userId}" required="true" requiredMessage="#{messages.CreateUsersRequiredMessage_userId}"/>
+                    <h:outputLabel value="#{messages.CreateUsersLabel_userGroups}" for="userGroups" />
+                    <h:selectOneMenu id="userGroups" value="#{usersController.selected.userGroups}" title="#{messages.CreateUsersTitle_userGroups}" >
+                        <f:selectItems value="#{userGroupsController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{usersController.create}" value="#{messages.CreateUsersSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{usersController.prepareList}" value="#{messages.CreateUsersShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{messages.CreateUsersIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

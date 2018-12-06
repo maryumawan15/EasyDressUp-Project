@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"          
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="utf-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <h:outputStylesheet name="easydressup.css"  library="css"/>
+        <h:outputStylesheet name="footer.css"  library="css"/>
+        <style>
+            .categories {
+                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            .categories td, .categories th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+            .categories td a{
+                color:white;
+            }
+            .categories tr:nth-child(even){background-color: #ffc107;color:white}
+            .categories tr:nth-child(odd){background-color: #343a40;color:white}
+
+            .categories tr:hover {background-color: #ddd;}
+
+            .categories th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #337ab7;
+                color: white;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <header>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">easyDressUp</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><h:link outcome="categories">Category</h:link></li>
+                        <li><h:link outcome="outfits">OutFit</h:link></li>
+                        <li><h:link outcome="calander">Calander</h:link></li>
+                        <li><h:link outcome="language">Language</h:link>                          
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar-nav" style="position: absolute;right: 42px;top: 9%;">
+                    <span style="color: white;position: absolute;right: 124%;top: 28%">
+                        <h:form>
+                            <h:commandLink style="color:white;cursor: pointer;" action="#{usersController.prepareProfile()}">
+                                <h:outputText value="#{loginController.user.firstName}">
+                                </h:outputText><span style="margin-right: 10px"/>
+                                <h:outputText value="#{loginController.user.lastName}"/>
+                            </h:commandLink></h:form></span>
+                    <h:form>
+                        <h:commandLink class="nav-item btn btn-primary" action="#{loginController.logout}">Logout</h:commandLink>
+                    </h:form>
+                </div>
+            </nav>
+        </header>  
+        <main role="main" class="container" id="main"  style="min-width: 100%;min-height: 100%;background: none">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:commandLink action="#{categoryController.prepareCreate}" value="#{messages.ListCategoryCreateLink}" class="btn btn-primary"/>
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{messages.ListCategoryEmpty}" rendered="#{categoryController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{categoryController.items.rowCount > 0}">
+                    <h:outputText value="#{categoryController.pagination.pageFirstItem + 1}..#{categoryController.pagination.pageLastItem + 1}/#{categoryController.pagination.itemsCount}"/><span style="margin:10px"></span>
+                    <h:commandLink action="#{categoryController.previous}" value="#{messages.Previous} #{categoryController.pagination.pageSize}" rendered="#{categoryController.pagination.hasPreviousPage}"/><span style="margin:10px"></span>
+                    <h:commandLink action="#{categoryController.next}" value="#{messages.Next} #{categoryController.pagination.pageSize}" rendered="#{categoryController.pagination.hasNextPage}"/><span style="margin:10px"></span>
+                    <h:dataTable value="#{categoryController.items}" var="item" border="0" cellpadding="2" cellspacing="0" class="categories" rules="all">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.ListCategoryTitle_category}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.category}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.ListCategoryTitle_parentCategory}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.parentCategory}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Actions"/>
+                            </f:facet>
+                            <h:commandLink class="btn btn-primary" action="#{categoryController.prepareView}" value="#{messages.ListCategoryViewLink}"/>
+                            <span style="margin: 10px"></span>
+                            <h:commandLink class="btn btn-primary" action="#{categoryController.prepareEdit}" value="#{messages.ListCategoryEditLink}"/>
+                            <span style="margin: 10px"></span>
+                            <h:commandLink class="btn btn-primary" action="#{categoryController.destroy}" value="#{messages.ListCategoryDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <span class="text-muted">&copy;Copyrights easydressup.com 2018-2019</span>
+            </div>
+        </footer>
+    </h:body>
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.ViewUsersTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{messages.ViewUsersLabel_email}"/>
+                    <h:outputText value="#{usersController.selected.email}" title="#{messages.ViewUsersTitle_email}"/>
+                    <h:outputText value="#{messages.ViewUsersLabel_firstName}"/>
+                    <h:outputText value="#{usersController.selected.firstName}" title="#{messages.ViewUsersTitle_firstName}"/>
+                    <h:outputText value="#{messages.ViewUsersLabel_lastName}"/>
+                    <h:outputText value="#{usersController.selected.lastName}" title="#{messages.ViewUsersTitle_lastName}"/>
+                    <h:outputText value="#{messages.ViewUsersLabel_gender}"/>
+                    <h:outputText value="#{usersController.selected.gender}" title="#{messages.ViewUsersTitle_gender}"/>
+                    <h:outputText value="#{messages.ViewUsersLabel_dob}"/>
+                    <h:outputText value="#{usersController.selected.dob}" title="#{messages.ViewUsersTitle_dob}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{usersController.destroyAndView}" value="#{messages.ViewUsersDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{messages.ViewUsersEditLink}"/>
+                <br />
+                <h:commandLink action="#{usersController.prepareCreate}" value="#{messages.ViewUsersCreateLink}" />
+                <br />
+                <h:commandLink action="#{usersController.prepareList}" value="#{messages.ViewUsersShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{messages.ViewUsersIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"          
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Easydressup-Login</title>
+        <meta charset="utf-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        <h:outputStylesheet name="footer.css"  library="css"/>
+    </h:head>
+    <h:body>
+        <header>
+            <!-- Fixed navbar -->
+            <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+                <a class="navbar-brand" href="#">easyDressUp</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div style="position: absolute;right: 0;top: 0">Admin</div>
+            </nav>
+        </header>
+        <main role="main" class="container" id="main">
+            <h2>Login</h2>
+            <h:panelGroup>
+                <h:form>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <h:inputText a:type="email" class="form-control" id="email" a:placeholder="Enter email" value="#{loginController.email}" required="true"></h:inputText>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Password:</label>
+                        <h:inputSecret class="form-control" id="pwd" a:placeholder="Enter password" value="#{loginController.password}"></h:inputSecret>
+                    </div>
+                    <h:commandButton class="btn btn-primary" action="#{loginController.login}" value="Submit"></h:commandButton><span style="margin:10px;"></span>
+
+                    <h:link class="btn btn-primary" outcome="/registration">Register</h:link>
+                </h:form>
+            </h:panelGroup>
+        </main>
+        <ui:include src="footer.xhtml"></ui:include>
+    </h:body>
+</html>
+

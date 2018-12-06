@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.ViewClothsTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{messages.ViewClothsLabel_id}"/>
+                    <h:outputText value="#{clothsController.selected.id}" title="#{messages.ViewClothsTitle_id}"/>
+                    <h:outputText value="#{messages.ViewClothsLabel_name}"/>
+                    <h:outputText value="#{clothsController.selected.name}" title="#{messages.ViewClothsTitle_name}"/>
+                    <h:outputText value="#{messages.ViewClothsLabel_contentType}"/>
+                    <h:outputText value="#{clothsController.selected.contentType}" title="#{messages.ViewClothsTitle_contentType}"/>
+                    <h:outputText value="#{messages.ViewClothsLabel_uploadedOn}"/>
+                    <h:outputText value="#{clothsController.selected.uploadedOn}" title="#{messages.ViewClothsTitle_uploadedOn}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{messages.ViewClothsLabel_imagePath}"/>
+                    <h:outputText value="#{clothsController.selected.imagePath}" title="#{messages.ViewClothsTitle_imagePath}"/>
+                    <h:outputText value="#{messages.ViewClothsLabel_category}"/>
+                    <h:outputText value="#{clothsController.selected.category}" title="#{messages.ViewClothsTitle_category}"/>
+                    <h:outputText value="#{messages.ViewClothsLabel_user}"/>
+                    <h:outputText value="#{clothsController.selected.user}" title="#{messages.ViewClothsTitle_user}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{clothsController.destroyAndView}" value="#{messages.ViewClothsDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{messages.ViewClothsEditLink}"/>
+                <br />
+                <h:commandLink action="#{clothsController.prepareCreate}" value="#{messages.ViewClothsCreateLink}" />
+                <br />
+                <h:commandLink action="#{clothsController.prepareList}" value="#{messages.ViewClothsShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{messages.ViewClothsIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

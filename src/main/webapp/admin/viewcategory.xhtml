@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"          
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="utf-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <h:outputStylesheet name="easydressup.css"  library="css"/>
+        <h:outputStylesheet name="footer.css"  library="css"/>
+        <style type="text/css">
+            body > .container {
+                padding: 0px 15px 15px 15px;
+
+            }
+            #main{
+                background: none;
+                position: absolute;
+                min-width: 100%;
+                min-height: 90%;
+                top: 0;
+                padding: 0;
+                margin-top: 0%
+            }
+
+            .cloths {
+                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                width: 80%;
+                position: absolute;
+                left: 10%;
+                top: 10%;   
+            }
+
+            .cloths td, .categories th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+            .cloths td a{
+                color:white;
+            }
+            .cloths tr:nth-child(even){background-color: #ffc107;color:white}
+            .cloths tr:nth-child(odd){background-color: #343a40;color:white}
+
+            .cloths tr:hover {background-color: #ddd;}
+
+            .cloths td:nth-child(1) {
+                width: 100px;
+            }
+            .cloths td:nth-child(2) {
+                width: 100px;
+            }
+            .cloths td:nth-child(3) {
+                width: 100px;
+            }
+
+            .cloths th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #337ab7;
+                color: white;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <header>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">easyDressUp</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li class="active"><h:link outcome="categories">Category</h:link></li>
+                        <li><h:link outcome="outfits">OutFit</h:link></li>
+                        <li><h:link outcome="calander">Calander</h:link></li>
+                        <li><h:link outcome="language">Language</h:link>                          
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar-nav" style="position: absolute;right: 42px;top: 9%;">
+                    <span style="color: white;position: absolute;right: 124%;top: 28%">
+                        <h:form>
+                            <h:commandLink style="color:white;cursor: pointer;" action="#{usersController.prepareProfile()}">
+                                <h:outputText value="#{loginController.user.firstName}">
+                                </h:outputText><span style="margin-right: 10px"/>
+                                <h:outputText value="#{loginController.user.lastName}"/>
+                            </h:commandLink></h:form></span>
+                    <h:form>
+                        <h:commandLink class="nav-item btn btn-primary" action="#{loginController.logout}">Logout</h:commandLink>
+                    </h:form>
+                </div>
+            </nav>
+        </header>  
+        <main role="main" class="container" id="main" style="margin-top: 4%;
+              background:none;">
+            <h:panelGrid columns="8">
+                <div style="color:orange">
+                    <h:outputText style="color:purple;font-weight: bold" value="#{categoryController.selected.category}" title="#{messages.ViewCategoryTitle_category}"/>     
+                    <span style="margin: 20px"></span>
+                </div>
+
+                <h:form enctype="multipart/form-data">
+                    <h:panelGrid columns="4">
+                        <h:inputFile value="#{clothsUploadController.uploadedFile}" required="true" style="background-color: gray;height: 30px;">
+                        </h:inputFile>
+                        <h:commandButton class="btn btn-primary" value="Upload" action="#{clothsUploadController.saveFile(loginController.user,categoryController.selected.category)}" type="submit">  
+                        </h:commandButton>
+                        <h:messages />
+                    </h:panelGrid>
+                </h:form>
+                <h:form>
+                    <h:commandLink class="btn btn-primary" action="#{categoryController.prepareList}" value="#{messages.ViewCategoryShowAllLink}"/>
+                </h:form>
+            </h:panelGrid>
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{messages.ListClothsEmpty}" rendered="#{clothsController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{clothsController.items.rowCount > 0}" >
+                    <h:outputText value="#{clothsController.pagination.pageFirstItem + 1}..#{clothsController.pagination.pageLastItem + 1}/#{clothsController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{clothsController.previous}" value="#{messages.Previous} #{clothsController.pagination.pageSize}" rendered="#{clothsController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{clothsController.next}" value="#{messages.Next} #{clothsController.pagination.pageSize}" rendered="#{clothsController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable class="cloths" value="#{clothsController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all">
+                        <h:column>
+                            <h:graphicImage value="/image/#{item.id}" style="width:100px;height:100px" />
+                        </h:column>                        
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.ListClothsTitle_category}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.category}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.ListClothsTitle_user}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.user.firstName}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Actions"/>
+                            </f:facet>
+                            <h:commandLink class="btn btn-primary" action="#{clothsController.prepareView}" value="#{messages.ListClothsViewLink}"/>
+                            <span style="margin: 10px"></span>
+                            <h:commandLink class="btn btn-primary" action="#{clothsController.prepareEdit}" value="#{messages.ListClothsEditLink}"/>
+                            <span style="margin: 10px"></span>
+                            <h:commandLink   class="btn btn-primary" action="#{clothsController.destroy}" value="#{messages.ListClothsDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+            </h:form>
+
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <span class="text-muted">&copy;Copyrights easydressup.com 2018-2019</span>
+            </div>
+        </footer>
+    </h:body>
+</html>
