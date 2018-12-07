@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -22,10 +23,10 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 
+ * @author
  */
 @Stateless
-@Path("com.easydressup.enity.user")
+@Path("user")
 public class UserFacadeREST extends AbstractFacade<User> {
 
     @PersistenceContext(unitName = "easydressupPU")
@@ -63,6 +64,22 @@ public class UserFacadeREST extends AbstractFacade<User> {
     }
 
     @GET
+    @Path("/find/{email}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public User findUserByEmail(@PathParam("email") String email) {
+        TypedQuery<User> query = em.createNamedQuery("User.findByEmail", User.class);
+        query.setParameter("email", email);
+        User user = null;
+        try {
+            user = query.getSingleResult();
+        } catch (Exception e) {
+            // getSingleResult throws NoResultException in case there is no user in DB
+            // ignore exception and return NULL for user instead
+        }
+        return user;
+    }
+
+    @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<User> findAll() {
@@ -87,5 +104,5 @@ public class UserFacadeREST extends AbstractFacade<User> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

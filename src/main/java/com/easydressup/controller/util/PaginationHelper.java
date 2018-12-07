@@ -1,5 +1,6 @@
 package com.easydressup.controller.util;
 
+import com.easydressup.enity.User;
 import javax.faces.model.DataModel;
 
 public abstract class PaginationHelper {
@@ -54,5 +55,7 @@ public abstract class PaginationHelper {
     public int getPageSize() {
         return pageSize;
     }
+
+    
 
 }

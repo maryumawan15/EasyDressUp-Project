@@ -21,10 +21,10 @@
                         <a class="navbar-brand" href="#">easyDressUp</a>
                     </div>
                     <ul class="nav navbar-nav">
-                        <li><h:link outcome="categories">Category</h:link></li>
-                        <li><h:link outcome="outfits">OutFit</h:link></li>
-                        <li><h:link outcome="calander">Calander</h:link></li>
-                        <li class="active"><h:link outcome="language">Language</h:link>                          
+                        <li><h:link outcome="categories"><h:outputLabel value="#{messages.category_link_label}"></h:outputLabel></h:link></li>
+                        <li><h:link outcome="outfits"><h:outputLabel value="#{messages.outfit_link_label}"></h:outputLabel></h:link></li>
+                        <li><h:link outcome="calander"><h:outputLabel value="#{messages.calender_link_label}"></h:outputLabel></h:link></li>
+                        <li class="active"><h:link outcome="language"><h:outputLabel value="#{messages.language_link_label}"></h:outputLabel></h:link>                          
                         </li>
                     </ul>
                 </div>
@@ -37,7 +37,7 @@
                                 <h:outputText value="#{loginController.user.lastName}"/>
                             </h:commandLink></h:form></span>
                     <h:form>
-                        <h:commandLink class="nav-item btn btn-primary" action="#{loginController.logout}">Logout</h:commandLink>
+                        <h:commandLink class="nav-item btn btn-primary" action="#{loginController.logout}" value="#{messages.logout_btn_label}"></h:commandLink>
                     </h:form>
                 </div>
             </nav>
