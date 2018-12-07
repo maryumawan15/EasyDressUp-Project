@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"          >
+      xmlns:h="http://java.sun.com/jsf/html"          
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <meta charset="utf-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
@@ -11,6 +12,24 @@
         <h:outputStylesheet name="easydressup.css"  library="css"/>
         <h:outputStylesheet name="footer.css"  library="css"/>
         <h:outputStylesheet name="jsfcrud.css"  library="css"/>
+        <style type="text/css">
+            .red{
+                color:purple;
+                font-weight:bold;
+                cursor: pointer
+            }
+             .black{
+                font-weight:bold;
+                color:gray;
+                cursor: pointer
+            }
+            .orange{
+                font-weight:bold;
+                color:blue;
+                
+                cursor: pointer
+            }
+        </style>
     </h:head>
     <h:body>
         <header>
@@ -23,15 +42,15 @@
                         <li><h:link outcome="categories"><h:outputLabel value="#{messages.category_link_label}"></h:outputLabel></h:link></li>
                         <li><h:link outcome="outfits"><h:outputLabel value="#{messages.outfit_link_label}"></h:outputLabel></h:link></li>
                         <li><h:link outcome="calander"><h:outputLabel value="#{messages.calender_link_label}"></h:outputLabel></h:link></li>
-                        <li><h:link outcome="language"><h:outputLabel value="#{messages.language_link_label}"></h:outputLabel></h:link>  
-                            <li ><h:link outcome="color"><h:outputLabel value="#{messages.color_link_label}"></h:outputLabel></h:link>  </li>
+                        <li><h:link outcome="language"><h:outputLabel value="#{messages.language_link_label}"></h:outputLabel></h:link>   
+                            <li class="active"><h:link outcome="color"><h:outputLabel value="#{messages.color_link_label}"></h:outputLabel></h:link>  </li>
                         </li>
                     </ul>
                 </div>
                 <div class="navbar-nav" style="position: absolute;right: 42px;top: 9%;">
                     <span style="color: white;position: absolute;right: 124%;top: 28%">
                         <h:form>
-                            <h:commandLink style="color:white;cursor: pointer;" action="#{usersController.prepareProfile()}">
+                            <h:commandLink styleClass="#{colorConvertorBean.selectedColor}" action="#{usersController.prepareProfile()}">
                                 <h:outputText value="#{loginController.user.firstName}">
                                 </h:outputText><span style="margin-right: 10px"/>
                                 <h:outputText value="#{loginController.user.lastName}"/>
@@ -41,11 +60,20 @@
                     </h:form>
                 </div>
             </nav>
-        </header>       
-
+        </header> 
+        <h:form>
+            <h:panelGrid columns="2">
+            <h:outputLabel value="#{messages.language_label}" styleClass="#{colorConvertorBean.selectedColor}"></h:outputLabel>
+            <h:selectOneMenu value="#{colorConvertorBean.selectedColor}" onchange="submit()"
+                             valueChangeListener="#{language.countryLocaleCodeChanged}">
+                <f:selectItems value="#{colorConvertorBean.colors}" /> 
+            </h:selectOneMenu>
+        </h:panelGrid>
+            
+        </h:form>
         <footer class="footer">
             <div class="container">
-                <span class="text-muted">&copy;Copyrights easydressup.com 2018-2019</span>
+                <span class="text-muted"><h:outputLabel styleClass="#{colorConvertorBean.selectedColor}"> &copy;Copyrights easydressup.com 2018-2019</h:outputLabel></span>
             </div>
         </footer>
     </h:body>

@@ -103,12 +103,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="pwd">Password:</label>
+                    <label for="pwd">Password:<h:outputText value="#{usersController.user.passwd}"</label>
                     <h:inputSecret  class="form-control" id="pwd" a:placeholder="Enter Password" value="#{usersController.user.passwd}" immediate="true">
                     </h:inputSecret>
                 </div>
 
-                <h:commandButton class="btn btn-primary" action="#{usersController.edit}" value="Update">
+                <h:commandButton class="btn btn-primary"  value="Update">
+                    <f:ajax event="click" execute="@form" render="@all" listener="#{usersController.edit}"/>
                 </h:commandButton> <span style="margin:10px;"></span>
             </h:form>
         </main>

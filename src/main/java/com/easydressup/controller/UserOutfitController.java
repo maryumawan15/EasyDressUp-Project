@@ -8,17 +8,21 @@ import com.easydressup.enity.Cloths;
 import com.easydressup.enity.User;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 
 @ManagedBean
 @SessionScoped
@@ -57,7 +61,9 @@ public class UserOutfitController implements Serializable {
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    final List<UserOutfit> findRange = getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()});
+                    
+                    return new ListDataModel(findRange);
                 }
             };
         }
@@ -157,8 +163,15 @@ public class UserOutfitController implements Serializable {
     }
 
     public DataModel getItems() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+      User user=null;
+        if(sessionMap.get("user")!=null){
+           user=(User) sessionMap.get("user");
+       }
         if (items == null) {
-            items = getPagination().createPageDataModel();
+            items = getPagination().createPageDataModel(user);
         }
         return items;
     }

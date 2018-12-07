@@ -7,10 +7,14 @@ package com.easydressup.controller;
  */
 import com.easydressup.enity.User;
 import com.easydressup.facade.UsersFacade;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -19,6 +23,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 /**
  * This controller has the functionality related to user registration
@@ -29,6 +39,7 @@ import javax.faces.event.ComponentSystemEvent;
 @SessionScoped
 public class RegistrationController implements Serializable {
 
+    private CloseableHttpClient CLIENT = HttpClients.createDefault();
     private static final long serialVersionUID = -5115227324370407117L;
     private List<String> genders;
     private String firstName;
@@ -66,15 +77,28 @@ public class RegistrationController implements Serializable {
      * @param event
      */
     public void validate(ComponentSystemEvent event) {
-        UIComponent components = event.getComponent();
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        if (usersFacade.findUserByEmail(email) != null) {
-            // get email
-            UIInput emailInput = (UIInput) components.findComponent("email");
-            FacesMessage msg = new FacesMessage("User with this e-mail already exists");
-            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-            facesContext.addMessage(emailInput.getClientId(), msg);
-            facesContext.renderResponse();
+        try {
+            UIComponent components = event.getComponent();
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            CLIENT = HttpClients.createDefault();
+            HttpGet get = new HttpGet("http://localhost:8080/easydressup/user/find/" + email);
+            get.addHeader("content-type", "application/json;charset=UTF-8");
+            get.addHeader("charset", "UTF-8");
+            HttpResponse response = (HttpResponse) CLIENT.execute(get);
+            HttpEntity entity = response.getEntity();
+            ObjectMapper mapper = new ObjectMapper();
+             User restUser = mapper.readValue((EntityUtils.toString(entity)), User.class);
+             System.out.println("-------------------------------------"+restUser.getEmail());
+            if (usersFacade.findUserByEmail(email) != null) {
+                // get email
+                UIInput emailInput = (UIInput) components.findComponent("email");
+                FacesMessage msg = new FacesMessage("User with this e-mail already exists");
+                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                facesContext.addMessage(emailInput.getClientId(), msg);
+                facesContext.renderResponse();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -96,12 +120,12 @@ public class RegistrationController implements Serializable {
         usersFacade.createUser(user);
         facesContext.addMessage(null, msg);
         facesContext.renderResponse();
-        dob=null;
-        firstName="";
-        lastName="";
-        gender="";
-        passwd="";
-        email="";
+        dob = null;
+        firstName = "";
+        lastName = "";
+        gender = "";
+        passwd = "";
+        email = "";
     }
 
     public String getFirstName() {

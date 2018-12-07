@@ -74,7 +74,6 @@ public class LoginController implements Serializable {
         log.info("Authentication done for user: " + principal.getName());
 
         sessionMap.put("user", user);
-        System.out.println(request.isUserInRole("ADMIN") + " " + request.isUserInRole("USERS"));
         if (request.isUserInRole("admin") && user.getRole().equals(UserGroups.ADMIN_GROUP)) {
             return "/admin/home?faces-redirect=true";
         } else if (request.isUserInRole("users")) {
